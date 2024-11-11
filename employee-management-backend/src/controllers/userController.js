@@ -159,7 +159,7 @@ const updateUser = AsyncHandler(async (req, res) => {
   if (req.file) {
     updates.Image = req.file.path;
   }
-  console.log(updates);
+  // console.log(updates);
   const updatedUser = await Employee.findOneAndUpdate(
     { ID },
     updates,
