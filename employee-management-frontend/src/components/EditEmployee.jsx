@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import Navbar from "./Navbar"; 
+import Navbar from "./Navbar";
 
 const EditEmployee = () => {
   const navigate = useNavigate();
   const { ID } = useParams();
-  
+
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,7 +25,6 @@ const EditEmployee = () => {
         
         const data = response.data.data.employee;
 
-      
         setName(data.Name || "");
         setEmail(data.Email || "");
         setGender(data.Gender || "");
@@ -42,13 +41,11 @@ const EditEmployee = () => {
     fetchEmployee();
   }, [ID]);
 
-
   const handleFileChange = (e) => {
     const selectedImage = e.target.files[0];
-    setImage(selectedImage);  
+    setImage(selectedImage);
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -57,7 +54,6 @@ const EditEmployee = () => {
       return;
     }
 
-   
     const formData = new FormData();
     formData.append("Name", name);
     formData.append("Email", email);
@@ -65,26 +61,28 @@ const EditEmployee = () => {
     formData.append("Mobile", mobile);
     formData.append("Designation", designation);
     formData.append("Course", course);
-    formData.append("Image", image);  
+    formData.append("Image", image);
+
     try {
       const token = localStorage.getItem("token");
+      console.log(formData);
+      
       const response = await axios.put(
         `http://localhost:8001/api/users/${ID}/updateEmployee`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",  
+            "Content-Type": "multipart/form-data",
           },
         }
       );
       console.log(response.data);
-      
       alert(response.data.message);
-      navigate("/admin-dashboard/employees"); 
+      navigate("/admin-dashboard/employees");
     } catch (error) {
       console.error("Error updating employee:", error);
-      alert(error.data);
+      alert("Failed to update employee.");
     }
   };
 
@@ -100,17 +98,16 @@ const EditEmployee = () => {
         {image && typeof image === 'string' ? (
           <div className="mb-4">
             <img
-              src={`${image}`}  
+              src={`${image}`}
               alt="Employee"
               className="w-32 h-32 object-cover"
             />
           </div>
         ) : (
-          image && <div>Image uploaded will appear here</div>  
+          image && <div>Image uploaded will appear here</div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          
           <div>
             <label htmlFor="name" className="block text-gray-700 font-medium">
               Name
@@ -125,7 +122,6 @@ const EditEmployee = () => {
             />
           </div>
 
-        
           <div>
             <label htmlFor="email" className="block text-gray-700 font-medium">
               Email
@@ -140,7 +136,6 @@ const EditEmployee = () => {
             />
           </div>
 
-          
           <div className="flex items-center space-x-6">
             <span className="font-medium text-gray-700">Gender</span>
             <label className="flex items-center">
@@ -149,7 +144,7 @@ const EditEmployee = () => {
                 name="gender"
                 value="Male"
                 checked={gender === "Male"}
-                onChange={() => setGender("Male")}
+                onChange={(e) => setGender(e.target.value)}
                 className="mr-2"
               />
               Male
@@ -160,14 +155,13 @@ const EditEmployee = () => {
                 name="gender"
                 value="Female"
                 checked={gender === "Female"}
-                onChange={() => setGender("Female")}
+                onChange={(e) => setGender(e.target.value)} 
                 className="mr-2"
               />
               Female
             </label>
           </div>
 
-        
           <div>
             <label htmlFor="mobile" className="block text-gray-700 font-medium">
               Mobile No.
@@ -182,7 +176,6 @@ const EditEmployee = () => {
             />
           </div>
 
-       
           <div>
             <label htmlFor="designation" className="block text-gray-700 font-medium">
               Designation
@@ -200,16 +193,16 @@ const EditEmployee = () => {
             </select>
           </div>
 
-         
           <div className="space-y-2">
             <span className="font-medium text-gray-700">Course</span>
             {["BCA", "MCA", "BSc"].map((courseOption) => (
               <label className="block" key={courseOption}>
                 <input
                   type="radio"
+                  name="course"
                   value={courseOption}
                   checked={course === courseOption}
-                  onChange={() => setCourse(courseOption)}
+                  onChange={(e) => setCourse(e.target.value)}
                   className="mr-2"
                 />
                 {courseOption}
@@ -229,7 +222,6 @@ const EditEmployee = () => {
             />
           </div>
 
-          
           <div className="flex justify-between">
             <button
               type="button"
