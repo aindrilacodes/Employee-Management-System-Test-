@@ -153,7 +153,8 @@ const updateUser = AsyncHandler(async (req, res) => {
   if (req.body.Mobile) updates.Mobile = req.body.Mobile;
   if (req.body.Designation) updates.Designation = req.body.Designation;
   if (req.body.Gender) updates.Gender = req.body.Gender;
-  if (req.body.Course) updates.Gender = req.body.Course;
+  if (req.body.Course) updates.Course = req.body.Course;
+console.log("here");
 
   
   if (req.file) {

@@ -48,12 +48,24 @@ const EditEmployee = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting form with values:", {
+      name,
+      email,
+      gender,
+      mobile,
+      designation,
+      course,
+    });
 
     if (!name || !email || !gender || !mobile || !designation || !course) {
       alert("Please fill in all fields.");
       return;
     }
-
+    const logFormData = (formData) => {
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+    };
     const formData = new FormData();
     formData.append("Name", name);
     formData.append("Email", email);
@@ -62,6 +74,7 @@ const EditEmployee = () => {
     formData.append("Designation", designation);
     formData.append("Course", course);
     formData.append("Image", image);
+    logFormData(formData);
 
     try {
       const token = localStorage.getItem("token");
@@ -137,30 +150,50 @@ const EditEmployee = () => {
           </div>
 
           <div className="flex items-center space-x-6">
-            <span className="font-medium text-gray-700">Gender</span>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="gender"
-                value="Male"
-                checked={gender === "Male"}
-                onChange={(e) => setGender(e.target.value)}
-                className="mr-2"
-              />
-              Male
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="gender"
-                value="Female"
-                checked={gender === "Female"}
-                onChange={(e) => setGender(e.target.value)} 
-                className="mr-2"
-              />
-              Female
-            </label>
-          </div>
+  <span className="font-medium text-gray-700">Gender</span>
+  <label className="flex items-center">
+    <input
+      type="radio"
+      name="gender"
+      value="Male"
+      checked={gender === "Male"}
+      onChange={(e) => {
+        console.log("Selected Gender:", e.target.value); 
+        setGender(e.target.value);
+      }}
+      className="mr-2"
+    />
+    Male
+  </label>
+  <label className="flex items-center">
+    <input
+      type="radio"
+      name="gender"
+      value="Female"
+      checked={gender === "Female"}
+      onChange={(e) => {
+        console.log("Selected Gender:", e.target.value); 
+        setGender(e.target.value);
+      }}
+      className="mr-2"
+    />
+    Female
+  </label>
+  <label className="flex items-center">
+    <input
+      type="radio"
+      name="gender"
+      value="Other"
+      checked={gender === "Other"}
+      onChange={(e) => {
+        console.log("Selected Gender:", e.target.value); // Log the selected gender
+        setGender(e.target.value);
+      }}
+      className="mr-2"
+    />
+    Other
+  </label>
+</div>
 
           <div>
             <label htmlFor="mobile" className="block text-gray-700 font-medium">
