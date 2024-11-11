@@ -144,8 +144,6 @@ console.log(emp);
     .json(new successResponse("Employee deleted successfully!"));
 });
 const updateUser = AsyncHandler(async (req, res) => {
-  console.log("reaching");
-  
   const ID = req.params.ID;
   let updates = {};
   const updateoptions = { new: true, runValidators: true };
@@ -156,14 +154,19 @@ const updateUser = AsyncHandler(async (req, res) => {
   if (req.body.Designation) updates.Designation = req.body.Designation;
   if (req.body.Gender) updates.Gender = req.body.Gender;
   if (req.body.Course) updates.Gender = req.body.Course;
+
+  
   if (req.file) {
     updates.Image = req.file.path;
   }
+  console.log(updates);
   const updatedUser = await Employee.findOneAndUpdate(
     { ID },
     updates,
     updateoptions
   ).select("-_id -__v");
+  console.log(updatedUser);
+  
   if (!updatedUser) {
     throw new ApiError(
       400,

@@ -59,12 +59,12 @@ const EditEmployee = () => {
 
    
     const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("gender", gender);
-    formData.append("mobile", mobile);
-    formData.append("designation", designation);
-    formData.append("course", course);
+    formData.append("Name", name);
+    formData.append("Email", email);
+    formData.append("Gender", gender);
+    formData.append("Mobile", mobile);
+    formData.append("Designation", designation);
+    formData.append("Course", course);
     formData.append("Image", image);  
     try {
       const token = localStorage.getItem("token");
@@ -78,6 +78,8 @@ const EditEmployee = () => {
           },
         }
       );
+      console.log(response.data);
+      
       alert(response.data.message);
       navigate("/admin-dashboard/employees"); 
     } catch (error) {
