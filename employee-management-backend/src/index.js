@@ -6,6 +6,11 @@ import { errorResponse } from "./helpers/ApiResponse.js";
 import ApiError from "./helpers/CustomError.js";
 import authRouter from "../src/routers/authRoute.js"
 import userRouter from "../src/routers/userRoute.js"
+import morgan from "morgan";
+import cors from "cors"
+
+app.use(cors())
+app.use(morgan("dev"));
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 

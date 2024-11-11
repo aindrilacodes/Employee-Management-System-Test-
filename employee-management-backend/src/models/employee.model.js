@@ -36,8 +36,12 @@ const employeeSchema = new mongoose.Schema(
     },
     Image: {
       type: String,
-      // required: true,
+      required: true,
     },
+    isActive:{
+      type:Boolean,
+      default:true
+    }
   },
   { timestamps: true }
 );
