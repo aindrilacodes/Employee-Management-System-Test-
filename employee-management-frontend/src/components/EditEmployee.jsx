@@ -19,10 +19,13 @@ const EditEmployee = () => {
     const fetchEmployee = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(`http://localhost:8001/api/users/${ID}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        
+        const response = await axios.get(
+          `http://localhost:8001/api/users/${ID}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
         const data = response.data.data.employee;
 
         setName(data.Name || "");
@@ -31,7 +34,7 @@ const EditEmployee = () => {
         setMobile(data.Mobile || "");
         setDesignation(data.Designation || "");
         setCourse(data.Course || "");
-        setImage(data.Image || null);  
+        setImage(data.Image || null);
       } catch (error) {
         console.error("Error fetching employee data:", error);
         alert("Failed to load employee details.");
@@ -79,7 +82,7 @@ const EditEmployee = () => {
     try {
       const token = localStorage.getItem("token");
       console.log(formData);
-      
+
       const response = await axios.put(
         `http://localhost:8001/api/users/${ID}/updateEmployee`,
         formData,
@@ -108,7 +111,7 @@ const EditEmployee = () => {
           Edit Employee
         </h1>
 
-        {image && typeof image === 'string' ? (
+        {image && typeof image === "string" ? (
           <div className="mb-4">
             <img
               src={`${image}`}
@@ -150,50 +153,36 @@ const EditEmployee = () => {
           </div>
 
           <div className="flex items-center space-x-6">
-  <span className="font-medium text-gray-700">Gender</span>
-  <label className="flex items-center">
-    <input
-      type="radio"
-      name="gender"
-      value="Male"
-      checked={gender === "Male"}
-      onChange={(e) => {
-        console.log("Selected Gender:", e.target.value); 
-        setGender(e.target.value);
-      }}
-      className="mr-2"
-    />
-    Male
-  </label>
-  <label className="flex items-center">
-    <input
-      type="radio"
-      name="gender"
-      value="Female"
-      checked={gender === "Female"}
-      onChange={(e) => {
-        console.log("Selected Gender:", e.target.value); 
-        setGender(e.target.value);
-      }}
-      className="mr-2"
-    />
-    Female
-  </label>
-  <label className="flex items-center">
-    <input
-      type="radio"
-      name="gender"
-      value="Other"
-      checked={gender === "Other"}
-      onChange={(e) => {
-        console.log("Selected Gender:", e.target.value); // Log the selected gender
-        setGender(e.target.value);
-      }}
-      className="mr-2"
-    />
-    Other
-  </label>
-</div>
+            <span className="font-medium text-gray-700">Gender</span>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="gender"
+                value="Male"
+                checked={gender === "Male"}
+                onChange={(e) => {
+                  console.log("Selected Gender:", e.target.value);
+                  setGender(e.target.value);
+                }}
+                className="mr-2"
+              />
+              Male
+            </label>
+            <label className="flex items-center">
+              <input
+                type="radio"
+                name="gender"
+                value="Female"
+                checked={gender === "Female"}
+                onChange={(e) => {
+                  console.log("Selected Gender:", e.target.value);
+                  setGender(e.target.value);
+                }}
+                className="mr-2"
+              />
+              Female
+            </label>
+          </div>
 
           <div>
             <label htmlFor="mobile" className="block text-gray-700 font-medium">
@@ -210,7 +199,10 @@ const EditEmployee = () => {
           </div>
 
           <div>
-            <label htmlFor="designation" className="block text-gray-700 font-medium">
+            <label
+              htmlFor="designation"
+              className="block text-gray-700 font-medium"
+            >
               Designation
             </label>
             <select
