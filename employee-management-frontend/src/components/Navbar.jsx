@@ -14,10 +14,11 @@ const Navbar = () => {
     <nav className="bg-white shadow-lg">
       <div className="container mx-auto px-6 py-3 flex justify-between items-center">
         <div
-          className="flex items-center cursor-pointer"
+          className="flex items-center cursor-pointer font-bold text-slate-700"
           onClick={() => navigate("/")}
         >
           <img src="/3447465.jpg" alt="Home Logo" className="h-8 w-8 mr-2" />
+          LOGO
         </div>
         <NavLink
           to="/"
