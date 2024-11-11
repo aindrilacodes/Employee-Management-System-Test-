@@ -70,6 +70,32 @@ const getUsers = AsyncHandler(async (req, res) => {
     })
   );
 });
+const getUserById = AsyncHandler(async (req, res) => {
+  const  ID  = req.params.ID; 
+  const user = await Employee.findOne({ ID: ID })
+    .select("-_id -__v");
+
+  if (!user) {
+    throw ApiError(404, "Employee not found!");
+  }
+
+  const formattedCreatedAt = user.createdAt
+    ? format(new Date(user.createdAt), "dd-MMM-yy")
+    : null;
+
+
+  const employeeData = {
+    ...user.toObject(),
+    createdAt: formattedCreatedAt,
+  };
+
+  return res.status(200).json(
+    new successResponse("Employee details returned!", {
+      employee: employeeData,
+    })
+  );
+});
+
 const createUser = AsyncHandler(async (req, res) => {
   const { Name, Email, Mobile, Designation, Gender, Course } = req.body;
 
@@ -98,7 +124,7 @@ const createUser = AsyncHandler(async (req, res) => {
   return res
     .status(201)
     .json(
-      new successResponse("Employee created Successfully", empDetailsWithoutId)
+      new successResponse("Employee created Successfully!", empDetailsWithoutId)
     );
 });
 const deleteUser = AsyncHandler(async (req, res) => {
@@ -118,6 +144,8 @@ console.log(emp);
     .json(new successResponse("Employee deleted successfully!"));
 });
 const updateUser = AsyncHandler(async (req, res) => {
+  console.log("reaching");
+  
   const ID = req.params.ID;
   let updates = {};
   const updateoptions = { new: true, runValidators: true };
@@ -146,5 +174,5 @@ const updateUser = AsyncHandler(async (req, res) => {
     .status(200)
     .json(new successResponse("User updated Successfully!", updatedUser));
 });
-export { getUsers, createUser, deleteUser, updateUser };
+export { getUsers, createUser, deleteUser, updateUser,getUserById };
 

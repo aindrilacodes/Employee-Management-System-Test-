@@ -26,6 +26,7 @@ console.log(publicId);
   },
 });
 const fileFilter = (req, file, cb) => {
+  
   if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
   } else {
@@ -36,14 +37,5 @@ const cloudinaryFileUploader = multer({
   storage: storage,
   fileFilter: fileFilter,
 });
-// const deleteImageFromCloudinary = async (public_id) => {
-//     try {
-//       const result = await cloudinary.uploader.destroy(public_id);
-//       console.log("Cloudinary delete result:", result);
-//       return result;
-//     } catch (error) {
-//       console.error("Error deleting from Cloudinary:", error);
-//       throw new Error("Error deleting image from Cloudinary");
-//     }
-// }
+
 export { cloudinaryFileUploader};

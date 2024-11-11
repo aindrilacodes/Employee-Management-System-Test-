@@ -4,12 +4,14 @@ import {
   deleteUser,
   getUsers,
   updateUser,
+  getUserById
 } from "../controllers/userController.js";
 import verifyUserToken from "../middlewares/authusertokenverify.js";
 import { cloudinaryFileUploader } from "../middlewares/fileUploader.js";
 const router = express.Router();
 
 router.route("/getEmployees").get(verifyUserToken, getUsers);
+router.route("/:ID").get(verifyUserToken, getUserById);
 router
   .route("/createEmployee")
   .post(verifyUserToken, cloudinaryFileUploader.single("Image"), createUser);
