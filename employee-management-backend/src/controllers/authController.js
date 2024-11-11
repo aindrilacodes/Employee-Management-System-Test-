@@ -26,7 +26,7 @@ const login = AsyncHandler(async (req, res) => {
 });
 
 const logout=AsyncHandler(async(req,res)=>{
-  res.status(200).json(new successResponse("User logged Out!"));
+  res.status(200).json(new successResponse("User log Out Successful!"));
 });
 
 
