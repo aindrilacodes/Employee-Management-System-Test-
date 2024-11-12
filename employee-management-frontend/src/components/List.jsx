@@ -11,7 +11,7 @@ const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(4);
-
+  const [statusFilter, setStatusFilter] = useState("all"); 
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -122,16 +122,31 @@ const List = () => {
             search: searchQuery,
             page: currentPage,
             limit: rowsPerPage,
+            isActive:
+              statusFilter === "all"
+                ? undefined
+                : statusFilter === "active"
+                ? true
+                : false, 
           },
         }
       );
 
-      setData(response.data.data.employees);
+      const info = response.data.data.employees;
       setTotalEmployees(response.data.data.TotalCount);
+
+     
+      if (statusFilter === "active") {
+        setData(info.filter((emp) => emp.isActive === true));
+      } else if (statusFilter === "inactive") {
+        setData(info.filter((emp) => emp.isActive === false));
+      } else {
+        setData(info); 
+      }
     } catch (error) {
       console.error("Error fetching employees:", error);
     }
-  }, [currentPage, searchQuery, rowsPerPage]);
+  }, [currentPage, searchQuery, rowsPerPage, statusFilter]);
 
   useEffect(() => {
     fetchData();
@@ -156,7 +171,6 @@ const List = () => {
         );
 
         fetchData();
-        console.log(response.data.message);
         setAlertMessage(response.data.message);
         setAlertType("success");
         setShowAlert(true);
@@ -189,6 +203,11 @@ const List = () => {
     fetchData();
   };
 
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />
@@ -197,6 +216,7 @@ const List = () => {
         <h1 className="text-2xl font-semibold text-gray-800 text-center underline underline-offset-2">
           Employee List
         </h1>
+
         <div className="flex justify-between p-4 mb-4">
           <div className="text-lg font-medium text-gray-600">
             Total Employees:{" "}
@@ -213,14 +233,24 @@ const List = () => {
           </button>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 flex gap-4">
           <input
             type="text"
             value={searchQuery}
             onChange={handleSearchChange}
             placeholder="Search by Name, Email, or ID"
-            className="p-2  border rounded w-full"
+            className="p-2 border rounded w-full"
           />
+
+          <select
+            value={statusFilter}
+            onChange={handleStatusFilterChange}
+            className="p-2 border rounded"
+          >
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
         </div>
 
         {showAlert && (
