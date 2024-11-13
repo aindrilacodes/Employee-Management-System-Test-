@@ -53,7 +53,6 @@ const getUsers = AsyncHandler(async (req, res) => {
     };
   });
 
-  
 
   return res.status(200).json(
     new successResponse("Employees returned!", {
@@ -144,6 +143,8 @@ console.log(emp);
     .json(new successResponse("Employee deleted successfully!"));
 });
 const updateUser = AsyncHandler(async (req, res) => {
+  console.log("Reaching");
+  
   const ID = req.params.ID;
   let updates = {};
   const updateoptions = { new: true, runValidators: true };

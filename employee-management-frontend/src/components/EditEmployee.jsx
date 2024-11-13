@@ -13,7 +13,7 @@ const EditEmployee = () => {
   const [gender, setGender] = useState("");
   const [mobile, setMobile] = useState("");
   const [designation, setDesignation] = useState("");
-  const [course, setCourse] = useState("");
+  const [courses, setCourses] = useState(""); // Single course as a string
 
   useEffect(() => {
     const fetchEmployee = async () => {
@@ -33,7 +33,7 @@ const EditEmployee = () => {
         setGender(data.Gender || "");
         setMobile(data.Mobile || "");
         setDesignation(data.Designation || "");
-        setCourse(data.Course || "");
+        setCourses(data.Course || ""); // Single selected course
         setImage(data.Image || null);
       } catch (error) {
         console.error("Error fetching employee data:", error);
@@ -49,39 +49,30 @@ const EditEmployee = () => {
     setImage(selectedImage);
   };
 
+  const handleCourseChange = (e) => {
+    const selectedCourse = e.target.value;
+    setCourses(selectedCourse); 
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting form with values:", {
-      name,
-      email,
-      gender,
-      mobile,
-      designation,
-      course,
-    });
 
-    if (!name || !email || !gender || !mobile || !designation || !course) {
+    if (!name || !email || !gender || !mobile || !designation || !courses) {
       alert("Please fill in all fields.");
       return;
     }
-    const logFormData = (formData) => {
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-    };
+
     const formData = new FormData();
     formData.append("Name", name);
     formData.append("Email", email);
     formData.append("Gender", gender);
     formData.append("Mobile", mobile);
     formData.append("Designation", designation);
-    formData.append("Course", course);
+    formData.append("Course", courses); 
     formData.append("Image", image);
-    logFormData(formData);
 
     try {
       const token = localStorage.getItem("token");
-      console.log(formData);
 
       const response = await axios.put(
         `http://localhost:8001/api/users/${ID}/updateEmployee`,
@@ -93,7 +84,6 @@ const EditEmployee = () => {
           },
         }
       );
-      console.log(response.data);
       alert(response.data.message);
       navigate("/admin-dashboard/employees");
     } catch (error) {
@@ -134,7 +124,6 @@ const EditEmployee = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="p-2 w-full border rounded-md"
-              placeholder="Enter name"
             />
           </div>
 
@@ -148,45 +137,38 @@ const EditEmployee = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="p-2 w-full border rounded-md"
-              placeholder="Enter email"
             />
           </div>
 
-          <div className="flex items-center space-x-6">
+          <div>
             <span className="font-medium text-gray-700">Gender</span>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="gender"
-                value="Male"
-                checked={gender === "Male"}
-                onChange={(e) => {
-                  console.log("Selected Gender:", e.target.value);
-                  setGender(e.target.value);
-                }}
-                className="mr-2"
-              />
-              Male
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="gender"
-                value="Female"
-                checked={gender === "Female"}
-                onChange={(e) => {
-                  console.log("Selected Gender:", e.target.value);
-                  setGender(e.target.value);
-                }}
-                className="mr-2"
-              />
-              Female
-            </label>
+            <div className="flex items-center space-x-4">
+              <label>
+                <input
+                  type="radio"
+                  value="Male"
+                  checked={gender === "Male"}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="mr-2"
+                />
+                Male
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="Female"
+                  checked={gender === "Female"}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="mr-2"
+                />
+                Female
+              </label>
+            </div>
           </div>
 
           <div>
             <label htmlFor="mobile" className="block text-gray-700 font-medium">
-              Mobile No.
+              Mobile
             </label>
             <input
               type="text"
@@ -194,7 +176,6 @@ const EditEmployee = () => {
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
               className="p-2 w-full border rounded-md"
-              placeholder="Enter mobile number"
             />
           </div>
 
@@ -205,17 +186,13 @@ const EditEmployee = () => {
             >
               Designation
             </label>
-            <select
+            <input
+              type="text"
               id="designation"
               value={designation}
               onChange={(e) => setDesignation(e.target.value)}
               className="p-2 w-full border rounded-md"
-            >
-              <option value="">Select Designation</option>
-              <option value="HR">HR</option>
-              <option value="Manager">Manager</option>
-              <option value="Sales">Sales</option>
-            </select>
+            />
           </div>
 
           <div className="space-y-2">
@@ -223,11 +200,11 @@ const EditEmployee = () => {
             {["BCA", "MCA", "BSc"].map((courseOption) => (
               <label className="block" key={courseOption}>
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="course"
                   value={courseOption}
-                  checked={course === courseOption}
-                  onChange={(e) => setCourse(e.target.value)}
+                  checked={courses === courseOption}
+                  onChange={handleCourseChange}
                   className="mr-2"
                 />
                 {courseOption}

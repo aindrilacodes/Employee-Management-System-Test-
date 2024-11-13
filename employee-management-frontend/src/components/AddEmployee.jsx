@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar"; 
+import Navbar from "./Navbar";
 
 const AddEmployee = () => {
   const navigate = useNavigate();
@@ -19,13 +19,13 @@ const AddEmployee = () => {
   };
 
   const handleCourseChange = (e) => {
-    setCourse(e.target.value);
+    const selectedCourse = e.target.value;
+    setCourse((prevCourse) => (prevCourse === selectedCourse ? "" : selectedCourse));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-   
     if (!name || !email || !gender || !mobile || !designation || !image || !course) {
       alert("Please fill in all fields.");
       return;
@@ -53,32 +53,27 @@ const AddEmployee = () => {
         }
       );
       console.log(response.data);
-      
       alert(response.data.message);
-      navigate("/admin-dashboard/employees");  
+      navigate("/admin-dashboard/employees");
     } catch (error) {
       console.error("Error creating employee:", error);
       if (error.response) {
-       
         alert(`Error: ${error.response.data.message}`);
       } else {
-        alert('An unexpected error occurred. Please try again later.');
+        alert("An unexpected error occurred. Please try again later.");
       }
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100">
- 
       <Navbar />
-      
       <div className="w-full max-w-4xl mx-auto flex flex-col py-4 px-6 border border-slate-200 shadow-lg gap-4 bg-white mt-8">
         <h1 className="text-2xl font-semibold text-gray-800 text-center mb-6">
           Create New Employee
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-        
           <div>
             <label htmlFor="name" className="block text-gray-700 font-medium">
               Name
@@ -107,7 +102,6 @@ const AddEmployee = () => {
             />
           </div>
 
-
           <div className="flex items-center space-x-6">
             <span className="font-medium text-gray-700">Gender</span>
             <label className="flex items-center">
@@ -132,10 +126,8 @@ const AddEmployee = () => {
               />
               Female
             </label>
-          
           </div>
 
-          
           <div>
             <label htmlFor="mobile" className="block text-gray-700 font-medium">
               Mobile No.
@@ -150,7 +142,6 @@ const AddEmployee = () => {
             />
           </div>
 
-      
           <div>
             <label htmlFor="designation" className="block text-gray-700 font-medium">
               Designation
@@ -168,12 +159,11 @@ const AddEmployee = () => {
             </select>
           </div>
 
-        
           <div className="space-y-2">
             <span className="font-medium text-gray-700">Course</span>
             <label className="block">
               <input
-                type="radio"
+                type="checkbox"
                 value="BCA"
                 checked={course === "BCA"}
                 onChange={handleCourseChange}
@@ -183,7 +173,7 @@ const AddEmployee = () => {
             </label>
             <label className="block">
               <input
-                type="radio"
+                type="checkbox"
                 value="MCA"
                 checked={course === "MCA"}
                 onChange={handleCourseChange}
@@ -193,7 +183,7 @@ const AddEmployee = () => {
             </label>
             <label className="block">
               <input
-                type="radio"
+                type="checkbox"
                 value="BSc"
                 checked={course === "BSc"}
                 onChange={handleCourseChange}
@@ -203,7 +193,6 @@ const AddEmployee = () => {
             </label>
           </div>
 
-         
           <div>
             <label htmlFor="image" className="block text-gray-700 font-medium">
               Image
@@ -215,6 +204,7 @@ const AddEmployee = () => {
               className="p-2 w-full border rounded-md"
             />
           </div>
+
           <div className="flex justify-between">
             <button
               type="button"
@@ -229,7 +219,6 @@ const AddEmployee = () => {
             >
               Create Employee
             </button>
-         
           </div>
         </form>
       </div>
